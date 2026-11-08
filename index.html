@@ -37,6 +37,7 @@
         .event-card { 
             background: rgba(255, 255, 255, 0.05); border-left: 4px solid #3498db; 
             padding: 15px; border-radius: 0 10px 10px 0; margin-bottom: 15px; font-style: italic; color: #ccc;
+            font-size: 14px;
         }
         
         .story-text { font-size: 16px; line-height: 1.5; margin-bottom: 15px; color: #eee; }
@@ -91,7 +92,6 @@
             <div class="story-title" id="st-title">Возраст: 12 лет</div>
             <div class="story-meta" id="st-meta">Клуб: Двор (Гатчина)</div>
             
-            <!-- Сюда будут вставляться текстовые блоки событий -->
             <div class="event-card" id="st-event">Событие</div>
             
             <div class="story-text" id="st-text">Текст</div>
@@ -109,7 +109,6 @@
         let stats = { speed: 15, shot: 10, dribble: 15, fatigue: 0 };
         let age = 12;
         let currentClub = "Двор (Гатчина)";
-        let matchCount = 0; // Счетчик матчей за год
 
         function startGame(diff) {
             difficulty = diff;
@@ -132,7 +131,6 @@
             }
         }
 
-        // Универсальная функция для отрисовки сцены
         function renderScene(title, eventText, storyText, buttons) {
             document.getElementById('st-title').innerText = `Возраст: ${age} лет`;
             document.getElementById('st-meta').innerText = `Клуб: ${currentClub}`;
@@ -153,7 +151,7 @@
 
         function calculateChance(statValue, baseDifficulty) {
             let chance = (statValue / 2) + baseDifficulty;
-            if (difficulty === "hard") chance -= 10; // В харде сложнее
+            if (difficulty === "hard") chance -= 10;
             return Math.min(95, Math.max(10, Math.floor(chance))); 
         }
 
@@ -180,7 +178,6 @@
                         stats.fatigue += 10;
                         updateUI(); age = 14; renderYear14(true);
                     } else {
-                        stats.morale -= 10;
                         updateUI(); age = 14; renderYear14(false);
                     }
                 }},
@@ -274,14 +271,13 @@
             renderScene("17 лет", "Тренировочный лагерь", text, btns);
         }
 
-        // Проверка на травму
         function checkInjury(nextAge, nextScene) {
             updateUI();
             if (stats.fatigue > 80 && difficulty === "hard") {
                 stats.speed -= 3; stats.shot -= 3; stats.fatigue = 20;
                 updateUI();
                 age = nextAge;
-                renderScene("Травма!", "Из-за перегрузки ты получил травму. Пропустил часть сезона и потерял форму.", "Тренер дал тебе шанс восстановиться, но ты потерял скорость и удар.", [
+                renderScene("Травма!", "Из-за перегрузки ты получил травму.", "Тренер дал тебе шанс восстановиться, но ты потерял скорость и удар.", [
                     { text: "Выйти на матч (Стиснув зубы)", action: () => nextScene() }
                 ]);
             } else {
