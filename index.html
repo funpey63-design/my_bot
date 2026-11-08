@@ -3,107 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Футбольная Карьера</title>
+    <title>Карьера Футболиста</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
+        /* Красивый фон без картинок */
         body {
-            /* Фон стадиона (размытый) */
-            background: url('https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
-            background-size: cover;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             color: white; min-height: 100vh; display: flex; flex-direction: column;
             padding: 10px; overflow-x: hidden;
         }
 
-        /* Затемнение фона, чтобы текст читался */
-        body::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75); z-index: -1;
-        }
-
-        /* ВЕРХНЯЯ ПАНЕЛЬ (Навыки) */
-        .stats-panel {
-            background: rgba(30, 30, 30, 0.9); border: 1px solid #444; border-radius: 12px; padding: 12px; margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        .stats-title { font-size: 14px; color: #f1c40f; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; text-align: center; font-weight: bold;}
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 2px; font-size: 14px; }
-        .stat-name { font-weight: bold; color: #ccc;}
-        .stat-val { color: #fff; font-weight: bold;}
+        /* Панель навыков */
+        .stats-panel { background: rgba(30, 30, 30, 0.9); border: 1px solid #444; border-radius: 12px; padding: 12px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);}
+        .stats-title { font-size: 14px; color: #f1c40f; margin-bottom: 8px; text-transform: uppercase; text-align: center; font-weight: bold;}
+        .stat-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 2px;}
+        .stat-val { font-weight: bold; color: #fff; }
         .stat-desc { font-size: 10px; color: #888; margin-bottom: 6px;}
 
-        /* ЭКРАН ИСТОРИИ */
-        .story-box {
-            background: rgba(20, 20, 20, 0.95); border: 1px solid #333; border-radius: 15px; padding: 20px; flex-grow: 1;
-            display: flex; flex-direction: column; justify-content: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-            animation: fadeIn 0.5s ease-in-out;
+        /* Окно истории */
+        .story-box { 
+            background: rgba(20, 20, 20, 0.95); border: 1px solid #333; border-radius: 15px; 
+            padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; 
+            animation: fadeIn 0.4s; box-shadow: 0 10px 20px rgba(0,0,0,0.6);
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .story-title { font-size: 22px; color: #3498db; margin-bottom: 5px; text-align: center; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
+        .story-meta { font-size: 14px; color: #f1c40f; text-align: center; margin-bottom: 15px; font-weight: bold; background: rgba(241, 196, 15, 0.1); padding: 5px; border-radius: 5px;}
+        
+        /* Текстовые карточки вместо картинок */
+        .event-card { 
+            background: rgba(255, 255, 255, 0.05); border-left: 4px solid #3498db; 
+            padding: 15px; border-radius: 0 10px 10px 0; margin-bottom: 15px; font-style: italic; color: #ccc;
         }
+        
+        .story-text { font-size: 16px; line-height: 1.5; margin-bottom: 15px; color: #eee; }
 
-        .story-title { font-size: 22px; color: #3498db; margin-bottom: 10px; text-align: center; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
-        .story-image { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444;}
-        .story-text { font-size: 16px; line-height: 1.5; margin-bottom: 20px; color: #ddd; }
-
-        /* КНОПКИ */
-        .buttons-container { display: flex; flex-direction: column; gap: 10px; margin-top: 10px;}
-        .btn {
-            background: linear-gradient(90deg, #2c3e50, #1a252f); color: white; border: 1px solid #3498db; padding: 15px; border-radius: 10px;
-            font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; text-align: left;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        /* Кнопки */
+        .buttons-container { display: flex; flex-direction: column; gap: 10px; }
+        .btn { 
+            background: linear-gradient(90deg, #2c3e50, #1a252f); color: white; border: 1px solid #3498db; 
+            padding: 15px; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; 
+            text-align: left; display: flex; justify-content: space-between; align-items: center;
+            transition: 0.2s;
         }
         .btn:active { transform: scale(0.97); background: #34495e; }
-        .btn-chance { font-size: 12px; color: #f1c40f; font-weight: normal;}
-        
-        /* Скрытие экранов */
+        .btn-chance { font-size: 12px; color: #f1c40f; font-weight: normal; }
         .hidden { display: none !important; }
-
+        
+        /* Меню сложности */
+        .menu-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center;}
+        .menu-btn { padding: 18px; width: 90%; margin: 10px; font-size: 18px; border-radius: 12px; cursor: pointer; font-weight: bold;}
+        .hard-btn { background: #c0392b; color: white; border: 2px solid #e74c3c; }
+        .easy-btn { background: #27ae60; color: white; border: 2px solid #2ecc71; }
     </style>
 </head>
 <body>
 
-    <!-- ПАНЕЛЬ НАВЫКОВ -->
-    <div class="stats-panel" id="skills-panel">
-        <div class="stats-title">📊 Твои навыки</div>
-        <div class="stat-row"><span class="stat-name">⚡ Скорость:</span> <span class="stat-val" id="stat-speed">30</span></div>
-        <div class="stat-desc">Влияет на шанс убежать от защитника.</div>
-        <div class="stat-row"><span class="stat-name">🎯 Удар:</span> <span class="stat-val" id="stat-shot">25</span></div>
-        <div class="stat-desc">Влияет на точность удара.</div>
-        <div class="stat-row"><span class="stat-name">🕺 Дриблинг:</span> <span class="stat-val" id="stat-dribble">30</span></div>
-        <div class="stat-desc">Влияет на обыгрыш 1 на 1.</div>
-        <div class="stat-row"><span class="stat-name">🔋 Усталость:</span> <span class="stat-val" id="stat-fatigue" style="color: #e74c3c;">0%</span></div>
-        <div class="stat-desc">Если достигнет 100% — травма.</div>
+    <!-- МЕНЮ ВЫБОРА СЛОЖНОСТИ -->
+    <div id="menu-screen" class="menu-screen">
+        <h1 style="color: #f1c40f; margin-bottom: 10px;">Карьера Футболиста</h1>
+        <p style="color: #aaa; margin-bottom: 30px;">Пройди путь от двора в Гатчине до вершины мирового футбола.</p>
+        <button class="menu-btn hard-btn" onclick="startGame('hard')">🔥 ХАРД (Реализм)</button>
+        <button class="menu-btn easy-btn" onclick="startGame('easy')">🌱 ЛЕГКО (Для отдыха)</button>
     </div>
 
-    <!-- ЭКРАН 1: НАЧАЛО -->
-    <div class="story-box" id="screen-1">
-        <div class="story-title">Гатчина. 15 лет.</div>
-        <!-- Картинка поля -->
-        <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=600&auto=format&fit=crop" class="story-image" alt="Футбольное поле">
-        <div class="story-text">
-            Ты играешь за ДЮСШ «Ленинградец». Твой лучший друг Ваня Соколов отдает тебе пас. Ты выходишь один на один с вратарем на глазах у скаутов «Зенита». Куда пробьешь?
+    <!-- ОСНОВНОЙ ИНТЕРФЕЙС -->
+    <div id="game-ui" class="hidden" style="display: flex; flex-direction: column; height: 100vh;">
+        
+        <!-- Панель навыков -->
+        <div class="stats-panel">
+            <div class="stats-title">📊 Твои навыки</div>
+            <div class="stat-row"><span>⚡ Скорость:</span> <span class="stat-val" id="s-speed">15</span></div>
+            <div class="stat-desc">Уход от защитников</div>
+            <div class="stat-row"><span>🎯 Удар:</span> <span class="stat-val" id="s-shot">10</span></div>
+            <div class="stat-desc">Точность и сила удара</div>
+            <div class="stat-row"><span>🕺 Дриблинг:</span> <span class="stat-val" id="s-dribble">15</span></div>
+            <div class="stat-desc">Обыгрыш 1 на 1</div>
+            <div class="stat-row"><span>🔋 Усталость:</span> <span class="stat-val" id="s-fatigue" style="color:#e74c3c;">0%</span></div>
+            <div class="stat-desc">Свыше 80% — риск травмы</div>
         </div>
-        <div class="buttons-container">
-            <button class="btn" onclick="makeChoice('shot_right')">Пробить в правую девятку <span class="btn-chance">Шанс 70%</span></button>
-            <button class="btn" onclick="makeChoice('shot_left')">Пробить в левый нижний <span class="btn-chance">Шанс 60%</span></button>
-            <button class="btn" onclick="makeChoice('pass_vanya')">Отдать пас Ване <span class="btn-chance">Шанс 90%</span></button>
-        </div>
-    </div>
 
-    <!-- ЭКРАН 2: РЕЗУЛЬТАТ -->
-    <div class="story-box hidden" id="screen-result">
-        <div class="story-title" id="res-title">Результат</div>
-        <!-- Картинка эмоции (например, радость или грусть) -->
-        <img src="" id="res-image" class="story-image hidden" alt="Результат">
-        <div class="story-text" id="res-text">...</div>
-        <div class="buttons-container">
-            <button class="btn" onclick="nextChapter()">Продолжить карьеру 👉</button>
+        <!-- Окно истории -->
+        <div class="story-box" id="story-box">
+            <div class="story-title" id="st-title">Возраст: 12 лет</div>
+            <div class="story-meta" id="st-meta">Клуб: Двор (Гатчина)</div>
+            
+            <!-- Сюда будут вставляться текстовые блоки событий -->
+            <div class="event-card" id="st-event">Событие</div>
+            
+            <div class="story-text" id="st-text">Текст</div>
+            <div class="buttons-container" id="buttons-area">
+                <!-- Кнопки -->
+            </div>
         </div>
     </div>
 
@@ -111,82 +105,250 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Характеристики
-        let stats = { speed: 30, shot: 25, dribble: 30, fatigue: 0 };
+        let difficulty = "hard";
+        let stats = { speed: 15, shot: 10, dribble: 15, fatigue: 0 };
+        let age = 12;
+        let currentClub = "Двор (Гатчина)";
+        let matchCount = 0; // Счетчик матчей за год
 
-        // Обновление интерфейса
-        function updateStats() {
-            document.getElementById('stat-speed').innerText = stats.speed;
-            document.getElementById('stat-shot').innerText = stats.shot;
-            document.getElementById('stat-dribble').innerText = stats.dribble;
-            document.getElementById('stat-fatigue').innerText = stats.fatigue + '%';
+        function startGame(diff) {
+            difficulty = diff;
+            document.getElementById('menu-screen').classList.add('hidden');
+            document.getElementById('game-ui').classList.remove('hidden');
+            updateUI();
+            renderYear12();
         }
 
-        // Логика выбора
-        function makeChoice(action) {
-            let chance = 0;
-            if (action === 'shot_right') chance = 70 + stats.shot; 
-            if (action === 'shot_left') chance = 60 + stats.shot;
-            if (action === 'pass_vanya') chance = 95;
-
-            let roll = Math.floor(Math.random() * 100) + 1;
-            let isSuccess = roll <= chance;
-
-            document.getElementById('screen-1').classList.add('hidden');
-            document.getElementById('screen-result').classList.remove('hidden');
-
-            let title = document.getElementById('res-title');
-            let text = document.getElementById('res-text');
-            let img = document.getElementById('res-image');
-            img.classList.remove('hidden');
-
-            if (action === 'pass_vanya') {
-                title.innerText = "Голевой пас!";
-                title.style.color = "#f1c40f";
-                img.src = "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=600&auto=format&fit=crop"; 
-                text.innerText = "Ты отдал пас, и Ваня забил! Скауты «Зенита» аплодируют Ване. Но тренер Михалыч подходит к тебе и говорит: 'Ты играешь головой, парень. Это ценится'. Ты получаешь приглашение в Академию, но Ваня становится главной звездой, а ты — в тени.";
-                stats.speed += 2;
-            } else if (isSuccess) {
-                title.innerText = "ГОООООЛ!";
-                title.style.color = "#2ecc71";
-                img.src = "https://images.unsplash.com/photo-1508344928928-7165b67de128?q=80&w=600&auto=format&fit=crop"; 
-                text.innerText = "Ты забил! Вратарь не успел среагировать. Скауты «Зенита» записывают твое имя. Ты едешь в Академию Санкт-Петербурга на полное обеспечение!";
-                stats.shot += 5;
-            } else {
-                title.innerText = "Промах...";
-                title.style.color = "#e74c3c";
-                img.src = "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?q=80&w=600&auto=format&fit=crop"; 
-                text.innerText = "Ты не попал в ворота. Мяч пролетел выше. Скауты разочарованно качают головами. Ты остаешься в Гатчине. Но Михалыч говорит: 'Не реви. Будем работать дальше'. Ты получаешь +10 к морали (ты злой и голодный до футбола).";
-                stats.shot += 2;
+        function updateUI() {
+            document.getElementById('s-speed').innerText = stats.speed;
+            document.getElementById('s-shot').innerText = stats.shot;
+            document.getElementById('s-dribble').innerText = stats.dribble;
+            document.getElementById('s-fatigue').innerText = stats.fatigue + '%';
+            document.getElementById('st-title').innerText = `Возраст: ${age} лет`;
+            document.getElementById('st-meta').innerText = `Клуб: ${currentClub}`;
+            
+            if (stats.fatigue >= 100) {
+                triggerInjury();
             }
-            
-            stats.fatigue += 20;
-            updateStats();
         }
 
-        function nextChapter() {
-            document.getElementById('screen-result').classList.add('hidden');
+        // Универсальная функция для отрисовки сцены
+        function renderScene(title, eventText, storyText, buttons) {
+            document.getElementById('st-title').innerText = `Возраст: ${age} лет`;
+            document.getElementById('st-meta').innerText = `Клуб: ${currentClub}`;
+            document.getElementById('st-event').innerText = eventText;
+            document.getElementById('st-text').innerText = storyText;
             
-            // Временная заглушка для следующей главы
-            const screen1 = document.getElementById('screen-1');
-            screen1.classList.remove('hidden');
-            
-            // Меняем текст на 16 лет
-            screen1.innerHTML = `
-                <div class="story-title">16 лет. Выбор клуба.</div>
-                <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=600&auto=format&fit=crop" class="story-image" alt="Трансферы">
-                <div class="story-text">
-                    Ты в Академии «Зенита». Но игровой практики нет. Твой агент предлагает варианты:
-                </div>
-                <div class="buttons-container">
-                    <button class="btn" onclick="alert('Ты выбрал Португалию (2 дивизион). Играем дальше!')">Перейти в Португалию (2 дивизион) <span class="btn-chance">Много игр</span></button>
-                    <button class="btn" onclick="alert('Ты выбрал Испанию (3 дивизион). Играем дальше!')">Перейти в Испанию (3 дивизион) <span class="btn-chance">Жесткая лига</span></button>
-                    <button class="btn" onclick="alert('Ты остался в Зените. Ждешь шанса.')">Остаться в Зените <span class="btn-chance">Риск</span></button>
-                </div>
-            `;
+            const btnArea = document.getElementById('buttons-area');
+            btnArea.innerHTML = ''; 
+
+            buttons.forEach(btn => {
+                const b = document.createElement('button');
+                b.className = 'btn';
+                b.innerHTML = `${btn.text} <span class="btn-chance">${btn.hint || ''}</span>`;
+                b.onclick = btn.action;
+                btnArea.appendChild(b);
+            });
         }
 
-        updateStats();
+        function calculateChance(statValue, baseDifficulty) {
+            let chance = (statValue / 2) + baseDifficulty;
+            if (difficulty === "hard") chance -= 10; // В харде сложнее
+            return Math.min(95, Math.max(10, Math.floor(chance))); 
+        }
+
+        // === ГОД 12 ===
+        function renderYear12() {
+            let btns = [
+                { text: "Пахать на тренировках", hint: "Удар +2, Усталость +10", action: () => {
+                    stats.shot += 2; stats.fatigue += 10; updateUI(); age = 13; renderYear13();
+                }},
+                { text: "Гулять с пацанами", hint: "Скорость +1, Усталость 0", action: () => {
+                    stats.speed += 1; stats.fatigue = 0; updateUI(); age = 13; renderYear13();
+                }}
+            ];
+            renderScene("12 лет", "Двор в Гатчине", "Ты гоняешь мяч на бетоне. Тренер ДЮСШ заметил тебя и предложил прийти на просмотр. До 13 лет нужно выбрать, как провести время.", btns);
+        }
+
+        // === ГОД 13 ===
+        function renderYear13() {
+            let btns = [
+                { text: "Пойти на просмотр в ДЮСШ", hint: "Шанс зависит от Скорости", action: () => {
+                    let chance = calculateChance(stats.speed, 50);
+                    if (Math.random() * 100 <= chance) {
+                        currentClub = "ДЮСШ Ленинградец";
+                        stats.fatigue += 10;
+                        updateUI(); age = 14; renderYear14(true);
+                    } else {
+                        stats.morale -= 10;
+                        updateUI(); age = 14; renderYear14(false);
+                    }
+                }},
+                { text: "Забить на футбол и пойти в подвал", hint: "Конец карьеры", action: () => {
+                    alert("Ты выбрал улицу. Карьера футболиста закончилась, не начавшись. Нажми F5, чтобы попробовать снова.");
+                }}
+            ];
+            renderScene("13 лет", "Просмотр", "Тренер смотрит на твою игру. Он ищет быстрых и выносливых. Твой шанс попасть в команду зависит от твоей скорости.", btns);
+        }
+
+        // === ГОД 14 ===
+        function renderYear14(success) {
+            let text = success ? "Ты в ДЮСШ! Начинаются настоящие тренировки." : "Ты не прошел. Придется год пахать самому, чтобы тебя заметили.";
+            let btns = [
+                { text: "Тренировать Удар", hint: "Удар +5", action: () => {
+                    stats.shot += 5; stats.fatigue += 15; updateUI(); age = 15; renderYear15();
+                }},
+                { text: "Тренировать Дриблинг", hint: "Дриблинг +5", action: () => {
+                    stats.dribble += 5; stats.fatigue += 15; updateUI(); age = 15; renderYear15();
+                }}
+            ];
+            renderScene("14 лет", "Тренировки", text, btns);
+        }
+
+        // === ГОД 15 (Матч со скаутами) ===
+        function renderYear15() {
+            let chanceRight = calculateChance(stats.shot, 55);
+            let chanceDribble = calculateChance(stats.dribble, 45);
+            
+            let btns = [
+                { text: "Пробить в правую девятку", hint: `Шанс ${chanceRight}%`, action: () => {
+                    if (Math.random() * 100 <= chanceRight) {
+                        stats.shot += 5; currentClub = "Академия Зенита";
+                        updateUI(); age = 16; renderYear16(true);
+                    } else {
+                        currentClub = "Ленинградец";
+                        updateUI(); age = 16; renderYear16(false);
+                    }
+                }},
+                { text: "Обыграть вратаря", hint: `Шанс ${chanceDribble}%`, action: () => {
+                    if (Math.random() * 100 <= chanceDribble) {
+                        stats.dribble += 5; currentClub = "Академия Зенита";
+                        updateUI(); age = 16; renderYear16(true);
+                    } else {
+                        currentClub = "Ленинградец";
+                        updateUI(); age = 16; renderYear16(false);
+                    }
+                }}
+            ];
+            renderScene("15 лет", "Матч ЮФЛ", "Скауты «Зенита» на трибунах. Выход 1 на 1. Как пробьешь?", btns);
+        }
+
+        // === ГОД 16 ===
+        function renderYear16(success) {
+            let text = success ? "Ты забил! Тебя забрали в Академию Зенита." : "Ты не забил. Остался в Ленинградце, но тренер обещал дать шанс.";
+            let btns = [];
+            
+            if (currentClub === "Академия Зенита") {
+                btns.push({ text: "Остаться в дубле Зенита", hint: "Мало игр", action: () => {
+                    stats.fatigue += 20; updateUI(); age = 17; renderYear17("zenit");
+                }});
+                btns.push({ text: "Уехать в Португалию (2 див.)", hint: "Игровая практика", action: () => {
+                    currentClub = "Португалия (2 див.)"; stats.speed += 5; updateUI(); age = 17; renderYear17("portugal");
+                }});
+            } else {
+                btns.push({ text: "Играть за Ленинградец", action: () => {
+                    stats.fatigue += 15; updateUI(); age = 17; renderYear17("russia");
+                }});
+            }
+            renderScene("16 лет", "Выбор пути", text, btns);
+        }
+
+        // === ГОД 17 ===
+        function renderYear17(path) {
+            let text = "";
+            if (path === "zenit") text = "Ты в дубле Зенита. Здесь тяжело, тренер тебя не замечает. Нужно пахать.";
+            if (path === "portugal") text = "Ты в Португалии. Здесь жесткий футбол, но ты получаешь игровые минуты.";
+            if (path === "russia") text = "Ты в основе Ленинградца. Ты лидер, но команда слабая.";
+
+            let btns = [
+                { text: "Тренировать Скорость (Бег)", hint: "Скорость +5, Усталость +30", action: () => {
+                    stats.speed += 5; stats.fatigue += 30; checkInjury(18, renderYear18);
+                }},
+                { text: "Тренировать Удар", hint: "Удар +5, Усталость +30", action: () => {
+                    stats.shot += 5; stats.fatigue += 30; checkInjury(18, renderYear18);
+                }},
+                { text: "Тренировать Дриблинг", hint: "Дриблинг +5, Усталость +30", action: () => {
+                    stats.dribble += 5; stats.fatigue += 30; checkInjury(18, renderYear18);
+                }}
+            ];
+            renderScene("17 лет", "Тренировочный лагерь", text, btns);
+        }
+
+        // Проверка на травму
+        function checkInjury(nextAge, nextScene) {
+            updateUI();
+            if (stats.fatigue > 80 && difficulty === "hard") {
+                stats.speed -= 3; stats.shot -= 3; stats.fatigue = 20;
+                updateUI();
+                age = nextAge;
+                renderScene("Травма!", "Из-за перегрузки ты получил травму. Пропустил часть сезона и потерял форму.", "Тренер дал тебе шанс восстановиться, но ты потерял скорость и удар.", [
+                    { text: "Выйти на матч (Стиснув зубы)", action: () => nextScene() }
+                ]);
+            } else {
+                age = nextAge;
+                nextScene();
+            }
+        }
+
+        // === ГОД 18 (Важный матч) ===
+        function renderYear18() {
+            let chance = calculateChance(stats.shot, 50);
+            let btns = [
+                { text: "Пробить самому", hint: `Шанс ${chance}%`, action: () => {
+                    if (Math.random() * 100 <= chance) {
+                        stats.shot += 10; stats.fatigue += 20;
+                        renderYear19(true);
+                    } else {
+                        stats.shot += 2; stats.fatigue += 20;
+                        renderYear19(false);
+                    }
+                }},
+                { text: "Отдать пас партнеру", hint: "Надежно", action: () => {
+                    stats.dribble += 3; stats.fatigue += 10;
+                    renderYear19(true, true);
+                }}
+            ];
+            renderScene("18 лет", "Кубок", "Решающий матч. Скауты из Европы на трибунах. На 90-й минуте пенальти. Твой удар решает всё.", btns);
+        }
+
+        // === ГОД 19 (Итог) ===
+        function renderYear19(success, assist = false) {
+            age = 19;
+            let text = "";
+            if (success && !assist) {
+                currentClub = "Топ-клуб Европы";
+                text = "Ты забил! Тебя выкупает клуб из высшего дивизиона Европы.";
+            } else if (assist) {
+                currentClub = "Клуб Ла Лиги";
+                text = "Ты отдал пас, партнер забил. Тебя ценят за ум и приглашают в Испанию.";
+            } else {
+                currentClub = "РПЛ";
+                text = "Ты промазал. Остаешься в России, но играешь в основе.";
+            }
+            updateUI();
+            renderScene("19 лет", "Итог года", text, [
+                { text: "Перейти к 20 годам", action: () => {
+                    age = 20;
+                    renderYear20();
+                }}
+            ]);
+        }
+
+        // === ГОД 20 ===
+        function renderYear20() {
+            renderScene("20 лет", "Готов к Европе", "Ты на пороге большого футбола. Твои характеристики выросли. Впереди — переход в топ-5 лиг.", [
+                { text: "Продолжить карьеру (20-38 лет)", action: () => {
+                    alert("Поздравляем! Ты дошел до 20 лет. В следующем коде мы распишем путь до 38 лет (с топ-клубами, старением Мбаппе и твоим финалом). Твои статы сохранены.");
+                }}
+            ]);
+        }
+
+        function triggerInjury() {
+            stats.fatigue = 0;
+            stats.speed -= 5; stats.shot -= 5;
+            updateUI();
+            alert("ВНИМАНИЕ! Усталость достигла 100%. Тяжелая травма! Ты потерял часть характеристик.");
+        }
     </script>
 </body>
 </html>
