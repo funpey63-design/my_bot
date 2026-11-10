@@ -3,139 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Карьера Футболиста</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Ярослав: Путь к мечте</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        /* Красивый фон без картинок */
-        body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: white; min-height: 100vh; display: flex; flex-direction: column;
-            padding: 10px; overflow-x: hidden;
-        }
-
-        /* Панель навыков */
-        .stats-panel { background: rgba(30, 30, 30, 0.9); border: 1px solid #444; border-radius: 12px; padding: 12px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);}
-        .stats-title { font-size: 14px; color: #f1c40f; margin-bottom: 8px; text-transform: uppercase; text-align: center; font-weight: bold;}
-        .stat-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 2px;}
-        .stat-val { font-weight: bold; color: #fff; }
-        .stat-desc { font-size: 10px; color: #888; margin-bottom: 6px;}
-
-        /* Окно истории */
-        .story-box { 
-            background: rgba(20, 20, 20, 0.95); border: 1px solid #333; border-radius: 15px; 
-            padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; 
-            animation: fadeIn 0.4s; box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .story-title { font-size: 22px; color: #3498db; margin-bottom: 5px; text-align: center; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
-        .story-meta { font-size: 14px; color: #f1c40f; text-align: center; margin-bottom: 15px; font-weight: bold; background: rgba(241, 196, 15, 0.1); padding: 5px; border-radius: 5px;}
-        
-        /* Текстовые карточки вместо картинок */
-        .event-card { 
-            background: rgba(255, 255, 255, 0.05); border-left: 4px solid #3498db; 
-            padding: 15px; border-radius: 0 10px 10px 0; margin-bottom: 15px; font-style: italic; color: #ccc;
-            font-size: 14px;
-        }
-        
-        .story-text { font-size: 16px; line-height: 1.5; margin-bottom: 15px; color: #eee; }
-
-        /* Кнопки */
-        .buttons-container { display: flex; flex-direction: column; gap: 10px; }
-        .btn { 
-            background: linear-gradient(90deg, #2c3e50, #1a252f); color: white; border: 1px solid #3498db; 
-            padding: 15px; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; 
-            text-align: left; display: flex; justify-content: space-between; align-items: center;
-            transition: 0.2s;
-        }
-        .btn:active { transform: scale(0.97); background: #34495e; }
-        .btn-chance { font-size: 12px; color: #f1c40f; font-weight: normal; }
+        body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: white; min-height: 100vh; display: flex; flex-direction: column; padding: 10px; overflow-x: hidden; }
+        .stats-panel { background: rgba(20, 20, 20, 0.95); border: 1px solid #444; border-radius: 10px; padding: 10px; margin-bottom: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .stat-row { display: flex; align-items: center; font-size: 12px; }
+        .stat-icon { width: 18px; margin-right: 5px; font-size: 14px;}
+        .stat-name { width: 65px; color: #aaa; font-weight: bold;}
+        .stat-bar-bg { flex-grow: 1; height: 6px; background: #333; border-radius: 3px; overflow: hidden; margin-right: 5px;}
+        .stat-bar-fill { height: 100%; width: 10%; background: #3498db; transition: width 0.3s; }
+        .stat-value { width: 20px; text-align: right; font-weight: bold; color: #fff;}
+        .image-container { width: 100%; height: 180px; border-radius: 12px; margin-bottom: 10px; border: 2px solid #555; box-shadow: 0 4px 10px rgba(0,0,0,0.5); background-color: #111; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; color: #666; font-size: 14px; text-align: center; }
+        .story-box { background: rgba(15, 15, 15, 0.95); border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 10px; flex-grow: 1; overflow-y: auto; }
+        .story-title { font-size: 18px; color: #f1c40f; font-weight: bold; margin-bottom: 5px;}
+        .story-text { font-size: 14px; line-height: 1.5; color: #ddd; margin-bottom: 15px; white-space: pre-wrap;}
+        .buttons-container { display: flex; flex-direction: column; gap: 8px; }
+        .btn { background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%); color: white; border: 1px solid #3498db; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; text-align: left; transition: 0.2s; }
+        .btn:active { transform: scale(0.98); background: #34495e; }
         .hidden { display: none !important; }
-        
-        /* Меню сложности */
         .menu-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center;}
-        .menu-btn { padding: 18px; width: 90%; margin: 10px; font-size: 18px; border-radius: 12px; cursor: pointer; font-weight: bold;}
-        .hard-btn { background: #c0392b; color: white; border: 2px solid #e74c3c; }
-        .easy-btn { background: #27ae60; color: white; border: 2px solid #2ecc71; }
+        .menu-btn { padding: 15px; width: 80%; margin: 10px; font-size: 18px; border-radius: 10px; cursor: pointer; font-weight: bold; background: #c0392b; color: white; border: 2px solid #e74c3c;}
     </style>
 </head>
 <body>
 
-    <!-- МЕНЮ ВЫБОРА СЛОЖНОСТИ -->
     <div id="menu-screen" class="menu-screen">
-        <h1 style="color: #f1c40f; margin-bottom: 10px;">Карьера Футболиста</h1>
-        <p style="color: #aaa; margin-bottom: 30px;">Пройди путь от двора в Гатчине до вершины мирового футбола.</p>
-        <button class="menu-btn hard-btn" onclick="startGame('hard')">🔥 ХАРД (Реализм)</button>
-        <button class="menu-btn easy-btn" onclick="startGame('easy')">🌱 ЛЕГКО (Для отдыха)</button>
+        <h1 style="color: #f1c40f; margin-bottom: 10px;">Ярослав: Путь к мечте</h1>
+        <button class="menu-btn" onclick="startGame()">🔥 НАЧАТЬ</button>
     </div>
 
-    <!-- ОСНОВНОЙ ИНТЕРФЕЙС -->
     <div id="game-ui" class="hidden" style="display: flex; flex-direction: column; height: 100vh;">
-        
-        <!-- Панель навыков -->
         <div class="stats-panel">
-            <div class="stats-title">📊 Твои навыки</div>
-            <div class="stat-row"><span>⚡ Скорость:</span> <span class="stat-val" id="s-speed">15</span></div>
-            <div class="stat-desc">Уход от защитников</div>
-            <div class="stat-row"><span>🎯 Удар:</span> <span class="stat-val" id="s-shot">10</span></div>
-            <div class="stat-desc">Точность и сила удара</div>
-            <div class="stat-row"><span>🕺 Дриблинг:</span> <span class="stat-val" id="s-dribble">15</span></div>
-            <div class="stat-desc">Обыгрыш 1 на 1</div>
-            <div class="stat-row"><span>🔋 Усталость:</span> <span class="stat-val" id="s-fatigue" style="color:#e74c3c;">0%</span></div>
-            <div class="stat-desc">Свыше 80% — риск травмы</div>
+            <div class="stat-row"><div class="stat-icon">⚡</div><div class="stat-name">Скорость</div><div class="stat-bar-bg"><div class="stat-bar-fill" id="bar-speed"></div></div><div class="stat-value" id="val-speed">15</div></div>
+            <div class="stat-row"><div class="stat-icon">🎯</div><div class="stat-name">Удар</div><div class="stat-bar-bg"><div class="stat-bar-fill" id="bar-shot" style="background:#e74c3c;"></div></div><div class="stat-value" id="val-shot">10</div></div>
+            <div class="stat-row"><div class="stat-icon">🕺</div><div class="stat-name">Дриблинг</div><div class="stat-bar-bg"><div class="stat-bar-fill" id="bar-dribble" style="background:#2ecc71;"></div></div><div class="stat-value" id="val-dribble">15</div></div>
+            <div class="stat-row"><div class="stat-icon">🔋</div><div class="stat-name">Усталость</div><div class="stat-bar-bg"><div class="stat-bar-fill" id="bar-fatigue" style="background:#f1c40f;"></div></div><div class="stat-value" id="val-fatigue">0</div></div>
         </div>
 
-        <!-- Окно истории -->
-        <div class="story-box" id="story-box">
-            <div class="story-title" id="st-title">Возраст: 12 лет</div>
-            <div class="story-meta" id="st-meta">Клуб: Двор (Гатчина)</div>
-            
-            <div class="event-card" id="st-event">Событие</div>
-            
-            <div class="story-text" id="st-text">Текст</div>
-            <div class="buttons-container" id="buttons-area">
-                <!-- Кнопки -->
-            </div>
+        <div class="story-box">
+            <div class="story-title" id="st-title">Загрузка...</div>
+            <div class="image-container" id="st-img">[Картинка]</div>
+            <div class="story-text" id="st-text"></div>
+            <div class="buttons-container" id="buttons-area"></div>
         </div>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        let difficulty = "hard";
         let stats = { speed: 15, shot: 10, dribble: 15, fatigue: 0 };
         let age = 12;
-        let currentClub = "Двор (Гатчина)";
+        let week = 1;
 
-        function startGame(diff) {
-            difficulty = diff;
+        function startGame() {
             document.getElementById('menu-screen').classList.add('hidden');
             document.getElementById('game-ui').classList.remove('hidden');
             updateUI();
-            renderYear12();
+            renderIntro();
         }
 
         function updateUI() {
-            document.getElementById('s-speed').innerText = stats.speed;
-            document.getElementById('s-shot').innerText = stats.shot;
-            document.getElementById('s-dribble').innerText = stats.dribble;
-            document.getElementById('s-fatigue').innerText = stats.fatigue + '%';
-            document.getElementById('st-title').innerText = `Возраст: ${age} лет`;
-            document.getElementById('st-meta').innerText = `Клуб: ${currentClub}`;
-            
-            if (stats.fatigue >= 100) {
-                triggerInjury();
-            }
+            document.getElementById('val-speed').innerText = stats.speed;
+            document.getElementById('val-shot').innerText = stats.shot;
+            document.getElementById('val-dribble').innerText = stats.dribble;
+            document.getElementById('val-fatigue').innerText = stats.fatigue;
+            document.getElementById('bar-speed').style.width = Math.min(100, stats.speed) + '%';
+            document.getElementById('bar-shot').style.width = Math.min(100, stats.shot) + '%';
+            document.getElementById('bar-dribble').style.width = Math.min(100, stats.dribble) + '%';
+            document.getElementById('bar-fatigue').style.width = Math.min(100, stats.fatigue) + '%';
         }
 
-        function renderScene(title, eventText, storyText, buttons) {
-            document.getElementById('st-title').innerText = `Возраст: ${age} лет`;
-            document.getElementById('st-meta').innerText = `Клуб: ${currentClub}`;
-            document.getElementById('st-event').innerText = eventText;
-            document.getElementById('st-text').innerText = storyText;
+        function getImage(num) { return `images/${num}.jpg`; }
+
+        function renderScene(title, text, imgNum, buttons) {
+            document.getElementById('st-title').innerText = title;
+            document.getElementById('st-text').innerText = text;
+            const imgDiv = document.getElementById('st-img');
+            imgDiv.style.backgroundImage = `url('${getImage(imgNum)}')`;
+            imgDiv.innerText = "";
+            const img = new Image();
+            img.src = getImage(imgNum);
+            img.onerror = function() { imgDiv.style.backgroundImage = "none"; imgDiv.innerText = `[Нет картинки ${imgNum}]`; };
             
             const btnArea = document.getElementById('buttons-area');
             btnArea.innerHTML = ''; 
@@ -143,207 +90,235 @@
             buttons.forEach(btn => {
                 const b = document.createElement('button');
                 b.className = 'btn';
-                b.innerHTML = `${btn.text} <span class="btn-chance">${btn.hint || ''}</span>`;
+                b.innerText = btn.text;
                 b.onclick = btn.action;
                 btnArea.appendChild(b);
             });
         }
 
-        function calculateChance(statValue, baseDifficulty) {
-            let chance = (statValue / 2) + baseDifficulty;
-            if (difficulty === "hard") chance -= 10;
-            return Math.min(95, Math.max(10, Math.floor(chance))); 
+        function checkChance(statValue, baseChance) {
+            let chance = baseChance + (statValue * 1.2); 
+            let roll = Math.floor(Math.random() * 100) + 1;
+            return roll <= chance;
         }
 
-        // === ГОД 12 ===
-        function renderYear12() {
-            let btns = [
-                { text: "Пахать на тренировках", hint: "Удар +2, Усталость +10", action: () => {
-                    stats.shot += 2; stats.fatigue += 10; updateUI(); age = 13; renderYear13();
-                }},
-                { text: "Гулять с пацанами", hint: "Скорость +1, Усталость 0", action: () => {
-                    stats.speed += 1; stats.fatigue = 0; updateUI(); age = 13; renderYear13();
-                }}
-            ];
-            renderScene("12 лет", "Двор в Гатчине", "Ты гоняешь мяч на бетоне. Тренер ДЮСШ заметил тебя и предложил прийти на просмотр. До 13 лет нужно выбрать, как провести время.", btns);
+        function renderIntro() {
+            renderScene("12 лет. Гатчина.", "Осень. Холодный ветер. Ты на бетонном поле. Отец пьет, мать на заводе. Тренер Михалыч ищет таланты.", 1, 
+            [{ text: "Выйти на поле и показать класс", action: () => startTraining12() }]);
         }
 
-        // === ГОД 13 ===
-        function renderYear13() {
-            let btns = [
-                { text: "Пойти на просмотр в ДЮСШ", hint: "Шанс зависит от Скорости", action: () => {
-                    let chance = calculateChance(stats.speed, 50);
-                    if (Math.random() * 100 <= chance) {
-                        currentClub = "ДЮСШ Ленинградец";
-                        stats.fatigue += 10;
-                        updateUI(); age = 14; renderYear14(true);
-                    } else {
-                        updateUI(); age = 14; renderYear14(false);
-                    }
-                }},
-                { text: "Забить на футбол и пойти в подвал", hint: "Конец карьеры", action: () => {
-                    alert("Ты выбрал улицу. Карьера футболиста закончилась, не начавшись. Нажми F5, чтобы попробовать снова.");
-                }}
-            ];
-            renderScene("13 лет", "Просмотр", "Тренер смотрит на твою игру. Он ищет быстрых и выносливых. Твой шанс попасть в команду зависит от твоей скорости.", btns);
+        function startTraining12() {
+            if (week > 4) { preMatch12(); return; }
+            let texts = ["Михалыч: 'Ты слишком медленный'.", "Впереди 'Металлург'.", "Дождь. Ты в грязи.", "Тактическая доска."];
+            renderScene(`12 лет. Неделя ${week}.`, texts[week-1], 4, [
+                { text: "Скорость (+6, Усталость +15)", action: () => { stats.speed += 6; stats.fatigue += 15; week++; checkInjury(startTraining12); }},
+                { text: "Удар (+6, Усталость +15)", action: () => { stats.shot += 6; stats.fatigue += 15; week++; checkInjury(startTraining12); }},
+                { text: "Дриблинг (+6, Усталость +15)", action: () => { stats.dribble += 6; stats.fatigue += 15; week++; checkInjury(startTraining12); }},
+                { text: "Отдохнуть (Усталость -40)", action: () => { stats.fatigue = Math.max(0, stats.fatigue - 40); week++; startTraining12(); }}
+            ]);
         }
 
-        // === ГОД 14 ===
-        function renderYear14(success) {
-            let text = success ? "Ты в ДЮСШ! Начинаются настоящие тренировки." : "Ты не прошел. Придется год пахать самому, чтобы тебя заметили.";
-            let btns = [
-                { text: "Тренировать Удар", hint: "Удар +5", action: () => {
-                    stats.shot += 5; stats.fatigue += 15; updateUI(); age = 15; renderYear15();
-                }},
-                { text: "Тренировать Дриблинг", hint: "Дриблинг +5", action: () => {
-                    stats.dribble += 5; stats.fatigue += 15; updateUI(); age = 15; renderYear15();
-                }}
-            ];
-            renderScene("14 лет", "Тренировки", text, btns);
-        }
-
-        // === ГОД 15 (Матч со скаутами) ===
-        function renderYear15() {
-            let chanceRight = calculateChance(stats.shot, 55);
-            let chanceDribble = calculateChance(stats.dribble, 45);
-            
-            let btns = [
-                { text: "Пробить в правую девятку", hint: `Шанс ${chanceRight}%`, action: () => {
-                    if (Math.random() * 100 <= chanceRight) {
-                        stats.shot += 5; currentClub = "Академия Зенита";
-                        updateUI(); age = 16; renderYear16(true);
-                    } else {
-                        currentClub = "Ленинградец";
-                        updateUI(); age = 16; renderYear16(false);
-                    }
-                }},
-                { text: "Обыграть вратаря", hint: `Шанс ${chanceDribble}%`, action: () => {
-                    if (Math.random() * 100 <= chanceDribble) {
-                        stats.dribble += 5; currentClub = "Академия Зенита";
-                        updateUI(); age = 16; renderYear16(true);
-                    } else {
-                        currentClub = "Ленинградец";
-                        updateUI(); age = 16; renderYear16(false);
-                    }
-                }}
-            ];
-            renderScene("15 лет", "Матч ЮФЛ", "Скауты «Зенита» на трибунах. Выход 1 на 1. Как пробьешь?", btns);
-        }
-
-        // === ГОД 16 ===
-        function renderYear16(success) {
-            let text = success ? "Ты забил! Тебя забрали в Академию Зенита." : "Ты не забил. Остался в Ленинградце, но тренер обещал дать шанс.";
-            let btns = [];
-            
-            if (currentClub === "Академия Зенита") {
-                btns.push({ text: "Остаться в дубле Зенита", hint: "Мало игр", action: () => {
-                    stats.fatigue += 20; updateUI(); age = 17; renderYear17("zenit");
-                }});
-                btns.push({ text: "Уехать в Португалию (2 див.)", hint: "Игровая практика", action: () => {
-                    currentClub = "Португалия (2 див.)"; stats.speed += 5; updateUI(); age = 17; renderYear17("portugal");
-                }});
-            } else {
-                btns.push({ text: "Играть за Ленинградец", action: () => {
-                    stats.fatigue += 15; updateUI(); age = 17; renderYear17("russia");
-                }});
-            }
-            renderScene("16 лет", "Выбор пути", text, btns);
-        }
-
-        // === ГОД 17 ===
-        function renderYear17(path) {
-            let text = "";
-            if (path === "zenit") text = "Ты в дубле Зенита. Здесь тяжело, тренер тебя не замечает. Нужно пахать.";
-            if (path === "portugal") text = "Ты в Португалии. Здесь жесткий футбол, но ты получаешь игровые минуты.";
-            if (path === "russia") text = "Ты в основе Ленинградца. Ты лидер, но команда слабая.";
-
-            let btns = [
-                { text: "Тренировать Скорость (Бег)", hint: "Скорость +5, Усталость +30", action: () => {
-                    stats.speed += 5; stats.fatigue += 30; checkInjury(18, renderYear18);
-                }},
-                { text: "Тренировать Удар", hint: "Удар +5, Усталость +30", action: () => {
-                    stats.shot += 5; stats.fatigue += 30; checkInjury(18, renderYear18);
-                }},
-                { text: "Тренировать Дриблинг", hint: "Дриблинг +5, Усталость +30", action: () => {
-                    stats.dribble += 5; stats.fatigue += 30; checkInjury(18, renderYear18);
-                }}
-            ];
-            renderScene("17 лет", "Тренировочный лагерь", text, btns);
-        }
-
-        function checkInjury(nextAge, nextScene) {
+        function checkInjury(nextScene) {
             updateUI();
-            if (stats.fatigue > 80 && difficulty === "hard") {
-                stats.speed -= 3; stats.shot -= 3; stats.fatigue = 20;
-                updateUI();
-                age = nextAge;
-                renderScene("Травма!", "Из-за перегрузки ты получил травму.", "Тренер дал тебе шанс восстановиться, но ты потерял скорость и удар.", [
-                    { text: "Выйти на матч (Стиснув зубы)", action: () => nextScene() }
-                ]);
-            } else {
-                age = nextAge;
-                nextScene();
-            }
+            if (stats.fatigue >= 80) {
+                stats.fatigue = 0; stats.speed -= 5; stats.shot -= 5;
+                renderScene("Травма!", "Ты перетренировался. Выбыл на 3 месяца.", 10, [{ text: "Продолжить", action: () => nextScene() }]);
+            } else { nextScene(); }
         }
 
-        // === ГОД 18 (Важный матч) ===
-        function renderYear18() {
-            let chance = calculateChance(stats.shot, 50);
-            let btns = [
-                { text: "Пробить самому", hint: `Шанс ${chance}%`, action: () => {
-                    if (Math.random() * 100 <= chance) {
-                        stats.shot += 10; stats.fatigue += 20;
-                        renderYear19(true);
+        function preMatch12() {
+            renderScene("Матч. 1-й тайм.", "Ты на скамейке. Ваня получает травму. Выходишь на 30-й минуте, счет 0:0.", 5, 
+            [{ text: "Выйти на поле", action: () => match12SecondHalf() }]);
+        }
+
+        function match12SecondHalf() {
+            let success = checkChance(stats.shot, 20); 
+            renderScene("Матч. 2-й тайм.", "60-я минута. Счет 0:1. На 75-й минуте ты получаешь мяч.", 5, [
+                { text: "Пробить по воротам", action: () => {
+                    if (success) {
+                        stats.shot += 3; updateUI();
+                        renderScene("Матч.", "Ты бьешь! ГООООЛ!", 13, [{ text: "Продолжить (13 лет)", action: () => { age = 13; week = 1; startStory13(); } }]);
                     } else {
-                        stats.shot += 2; stats.fatigue += 20;
-                        renderYear19(false);
+                        renderScene("Матч.", "Вратарь забирает мяч.", 5, [{ text: "Продолжить (13 лет)", action: () => { age = 13; week = 1; startStory13(); } }]);
                     }
                 }},
-                { text: "Отдать пас партнеру", hint: "Надежно", action: () => {
-                    stats.dribble += 3; stats.fatigue += 10;
-                    renderYear19(true, true);
-                }}
-            ];
-            renderScene("18 лет", "Кубок", "Решающий матч. Скауты из Европы на трибунах. На 90-й минуте пенальти. Твой удар решает всё.", btns);
-        }
-
-        // === ГОД 19 (Итог) ===
-        function renderYear19(success, assist = false) {
-            age = 19;
-            let text = "";
-            if (success && !assist) {
-                currentClub = "Топ-клуб Европы";
-                text = "Ты забил! Тебя выкупает клуб из высшего дивизиона Европы.";
-            } else if (assist) {
-                currentClub = "Клуб Ла Лиги";
-                text = "Ты отдал пас, партнер забил. Тебя ценят за ум и приглашают в Испанию.";
-            } else {
-                currentClub = "РПЛ";
-                text = "Ты промазал. Остаешься в России, но играешь в основе.";
-            }
-            updateUI();
-            renderScene("19 лет", "Итог года", text, [
-                { text: "Перейти к 20 годам", action: () => {
-                    age = 20;
-                    renderYear20();
+                { text: "Отдать пас", action: () => {
+                    renderScene("Матч.", "Защитник блокирует.", 5, [{ text: "Продолжить (13 лет)", action: () => { age = 13; week = 1; startStory13(); } }]);
                 }}
             ]);
         }
 
-        // === ГОД 20 ===
-        function renderYear20() {
-            renderScene("20 лет", "Готов к Европе", "Ты на пороге большого футбола. Твои характеристики выросли. Впереди — переход в топ-5 лиг.", [
-                { text: "Продолжить карьеру (20-38 лет)", action: () => {
-                    alert("Поздравляем! Ты дошел до 20 лет. В следующем коде мы распишем путь до 38 лет (с топ-клубами, старением Мбаппе и твоим финалом). Твои статы сохранены.");
+        function startStory13() {
+            renderScene("13 лет. Дом.", "Отец снова пьет. Требует деньги.", 3, [
+                { text: "Отдать деньги", action: () => { renderScene("13 лет.", "Отец забрал деньги.", 3, [{ text: "Тренироваться", action: () => startTraining13() }]); }},
+                { text: "Спрятать деньги", action: () => { stats.speed -= 4; updateUI(); renderScene("13 лет.", "Отец избил тебя.", 8, [{ text: "Тренироваться", action: () => startTraining13() }]); }}
+            ]);
+        }
+
+        function startTraining13() {
+            if (week > 4) { startMatch13(); return; }
+            renderScene(`13 лет. Неделя ${week}.`, "Тренировка.", 4, [
+                { text: "Скорость (+7)", action: () => { stats.speed += 7; stats.fatigue += 20; week++; checkInjury(startTraining13); }},
+                { text: "Удар (+7)", action: () => { stats.shot += 7; stats.fatigue += 20; week++; checkInjury(startTraining13); }},
+                { text: "Дриблинг (+7)", action: () => { stats.dribble += 7; stats.fatigue += 20; week++; checkInjury(startTraining13); }},
+                { text: "Отдых", action: () => { stats.fatigue = Math.max(0, stats.fatigue - 40); week++; startTraining13(); }}
+            ]);
+        }
+
+        function startMatch13() {
+            let success = checkChance(stats.dribble, 15);
+            renderScene("Матч. Скауты на трибунах.", "85-я минута.", 5, [
+                { text: "Пробить в девятку", action: () => {
+                    if (success) {
+                        renderScene("Матч.", "Ты забил! Скауты записали имя.", 5, [{ text: "Продолжить (14 лет)", action: () => { age = 14; week = 1; startStory14(); } }]);
+                    } else {
+                        renderScene("Матч.", "Ты промазал.", 5, [{ text: "Продолжить (14 лет)", action: () => { age = 14; week = 1; startStory14(); } }]);
+                    }
+                }},
+                { text: "Обыграть защитника", action: () => {
+                    if (success) {
+                        renderScene("Матч.", "Ты обвел и забил!", 5, [{ text: "Продолжить (14 лет)", action: () => { age = 14; week = 1; startStory14(); } }]);
+                    } else {
+                        renderScene("Матч.", "Защитник отобрал мяч.", 5, [{ text: "Продолжить (14 лет)", action: () => { age = 14; week = 1; startStory14(); } }]);
+                    }
                 }}
             ]);
         }
 
-        function triggerInjury() {
-            stats.fatigue = 0;
-            stats.speed -= 5; stats.shot -= 5;
-            updateUI();
-            alert("ВНИМАНИЕ! Усталость достигла 100%. Тяжелая травма! Ты потерял часть характеристик.");
+        function startStory14() {
+            renderScene("14 лет. Академия.", "Ваня завидует. Бьет тебя по ноге.", 8, [
+                { text: "Ответить жестко", action: () => { renderScene("14 лет.", "Вы подрались. Тебя отстранили.", 8, [{ text: "Тренироваться", action: () => startTraining14() }]); }},
+                { text: "Стерпеть", action: () => { stats.speed -= 3; updateUI(); renderScene("14 лет.", "Ты стерпел.", 10, [{ text: "Тренироваться", action: () => startTraining14() }]); }}
+            ]);
+        }
+
+        function startTraining14() {
+            if (week > 4) { startMatch14(); return; }
+            renderScene(`14 лет. Неделя ${week}.`, "Подготовка к Юношеской Лиге.", 6, [
+                { text: "Скорость (+8)", action: () => { stats.speed += 8; stats.fatigue += 25; week++; checkInjury(startTraining14); }},
+                { text: "Удар (+8)", action: () => { stats.shot += 8; stats.fatigue += 25; week++; checkInjury(startTraining14); }},
+                { text: "Дриблинг (+8)", action: () => { stats.dribble += 8; stats.fatigue += 25; week++; checkInjury(startTraining14); }},
+                { text: "Отдых", action: () => { stats.fatigue = Math.max(0, stats.fatigue - 40); week++; startTraining14(); }}
+            ]);
+        }
+
+        function startMatch14() {
+            let success = checkChance(stats.shot, 10);
+            renderScene("Матч. Зенит-М vs Реал U-19.", "Ты на скамейке. Выходишь на 60-й. Счет 0:2.", 5, [
+                { text: "Пробить через себя", action: () => {
+                    if (success) {
+                        renderScene("Матч.", "Ты забил 'Реалу' через себя!", 13, [{ text: "Продолжить (15 лет)", action: () => { age = 15; week = 1; startStory15(); } }]);
+                    } else {
+                        renderScene("Матч.", "Защитник блокирует удар.", 5, [{ text: "Продолжить (15 лет)", action: () => { age = 15; week = 1; startStory15(); } }]);
+                    }
+                }},
+                { text: "Отдать пас", action: () => {
+                    renderScene("Матч.", "Партнер забивает! 1:2.", 5, [{ text: "Продолжить (15 лет)", action: () => { age = 15; week = 1; startStory15(); } }]);
+                }}
+            ]);
+        }
+
+        function startStory15() {
+            renderScene("15 лет. Выбор клуба.", "Куда пойдешь?", 9, [
+                { text: "«Зенит»", action: () => { stats.speed += 10; updateUI(); startTraining16(); }},
+                { text: "«Спартак»", action: () => { stats.dribble += 10; updateUI(); startTraining16(); }},
+                { text: "«Ленинградец»", action: () => { stats.shot += 10; updateUI(); startTraining16(); }}
+            ]);
+        }
+
+        function startTraining16() {
+            if (week > 4) { startMatch16(); return; }
+            renderScene(`16 лет. Неделя ${week}.`, "Ты в молодежке.", 6, [
+                { text: "Скорость (+10)", action: () => { stats.speed += 10; stats.fatigue += 30; week++; checkInjury(startTraining16); }},
+                { text: "Удар (+10)", action: () => { stats.shot += 10; stats.fatigue += 30; week++; checkInjury(startTraining16); }},
+                { text: "Дриблинг (+10)", action: () => { stats.dribble += 10; stats.fatigue += 30; week++; checkInjury(startTraining16); }},
+                { text: "Отдых", action: () => { stats.fatigue = Math.max(0, stats.fatigue - 50); week++; startTraining16(); }}
+            ]);
+        }
+
+        function startMatch16() {
+            renderScene("Матч. 16 лет.", "Ты выходишь в основе.", 7, [
+                { text: "Показать класс", action: () => {
+                    age = 17; week = 1;
+                    renderScene("17 лет. Аренда.", "Твой агент принес контракт из Европы.", 11, [
+                        { text: "Поехать в Европу", action: () => { stats.speed += 5; stats.shot += 5; updateUI(); startTraining17(); }},
+                        { text: "Остаться в России", action: () => { stats.shot += 5; stats.dribble += 5; updateUI(); startTraining17(); }}
+                    ]);
+                }}
+            ]);
+        }
+
+        function startTraining17() {
+            if (week > 4) { startMatch17(); return; }
+            renderScene(`17 лет. Аренда. Неделя ${week}.`, "Жесткий футбол.", 9, [
+                { text: "Скорость (+12)", action: () => { stats.speed += 12; stats.fatigue += 30; week++; checkInjury(startTraining17); }},
+                { text: "Удар (+12)", action: () => { stats.shot += 12; stats.fatigue += 30; week++; checkInjury(startTraining17); }},
+                { text: "Дриблинг (+12)", action: () => { stats.dribble += 12; stats.fatigue += 30; week++; checkInjury(startTraining17); }},
+                { text: "Отдых", action: () => { stats.fatigue = Math.max(0, stats.fatigue - 50); week++; startTraining17(); }}
+            ]);
+        }
+
+        function startMatch17() {
+            renderScene("Матч в Европе.", "Ты выходишь в основе.", 9, [
+                { text: "Показать класс", action: () => {
+                    age = 20; week = 1;
+                    renderScene("20 лет.", "Ты стал звездой.", 12, [
+                        { text: "Продолжить", action: () => { stats.speed += 15; stats.shot += 15; stats.dribble += 15; updateUI(); startTraining20(); }}
+                    ]);
+                }}
+            ]);
+        }
+
+        function startTraining20() {
+            if (week > 4) { startMatch20(); return; }
+            renderScene(`20 лет. Неделя ${week}.`, "Ты лидер.", 9, [
+                { text: "Скорость (+15)", action: () => { stats.speed += 15; stats.fatigue += 35; week++; checkInjury(startTraining20); }},
+                { text: "Удар (+15)", action: () => { stats.shot += 15; stats.fatigue += 35; week++; checkInjury(startTraining20); }},
+                { text: "Дриблинг (+15)", action: () => { stats.dribble += 15; stats.fatigue += 35; week++; checkInjury(startTraining20); }},
+                { text: "Отдых", action: () => { stats.fatigue = Math.max(0, stats.fatigue - 60); week++; startTraining20(); }}
+            ]);
+        }
+
+        function startMatch20() {
+            renderScene("Матч. Лига Чемпионов.", "Ты играешь в ЛЧ.", 12, [
+                { text: "Забить гол", action: () => {
+                    age = 25; week = 1;
+                    renderScene("25 лет. Топ-клуб.", "'Реал' предлагает контракт.", 12, [
+                        { text: "Перейти в Реал", action: () => { updateUI(); startTraining25(); }}
+                    ]);
+                }}
+            ]);
+        }
+
+        function startTraining25() {
+            if (week > 4) { startFinalMatch(); return; }
+            renderScene(`25 лет. Реал. Неделя ${week}.`, "Ты на вершине.", 7, [
+                { text: "Скорость (+18)", action: () => { stats.speed += 18; stats.fatigue += 40; week++; checkInjury(startTraining25); }},
+                { text: "Удар (+18)", action: () => { stats.shot += 18; stats.fatigue += 40; week++; checkInjury(startTraining25); }},
+                { text: "Дриблинг (+18)", action: () => { stats.dribble += 18; stats.fatigue += 40; week++; checkInjury(startTraining25); }},
+                { text: "Отдых", action: () => { stats.fatigue = Math.max(0, stats.fatigue - 60); week++; startTraining25(); }}
+            ]);
+        }
+
+        function startFinalMatch() {
+            renderScene("Финал Лиги Чемпионов. 30 лет.", "Твой последний шанс.", 12, [
+                { text: "Пробить через себя", action: () => {
+                    let success = checkChance(stats.shot, 30);
+                    if (success) {
+                        renderScene("Триумф!", "Ты забиваешь! Ты поднимаешь кубок!", 14, [
+                            { text: "Завершить историю", action: () => {
+                                renderScene("Возвращение.", "Ты вернулся в Гатчину.", 15, [
+                                    { text: "Начать заново", action: () => location.reload() }
+                                ]);
+                            }}
+                        ]);
+                    } else {
+                        renderScene("Промах...", "Вратарь тащит удар. Но ты все равно легенда.", 14, [
+                            { text: "Завершить историю", action: () => location.reload() }
+                        ]);
+                    }
+                }}
+            ]);
         }
     </script>
 </body>
